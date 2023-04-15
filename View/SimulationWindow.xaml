@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="View.SimulationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:View"
+        mc:Ignorable="d"
+        d:DesignHeight="580" d:DesignWidth="800">
+    <Canvas Background="White">
+        <TextBox
+                x:Name="amountOfBalls"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Center"
+                Height="30"
+                Width="200"
+                Margin="300, 490, 0, 0"
+                Background="BlueViolet"
+                Foreground="White"
+                TextAlignment="Center"
+                VerticalContentAlignment="Center"
+                Tag="Amount"
+                Text="{Binding BallsCount}"/>
+        <Button
+                Command="{Binding StartSimulationInput}"
+                Content="Start"
+                FontSize="20"
+                VerticalAlignment="Center"
+                Height="30"
+                Width="100"
+                Margin="240, 530, 0, 0"
+                HorizontalAlignment="Left"
+                VerticalContentAlignment="Center"
+                Background="BlueViolet"
+                Foreground="White"
+                />
+        <Button
+                Command="{Binding StopSimulationInput}"
+                Content="Stop"
+                FontSize="20"
+                VerticalAlignment="Center"
+                Height="30"
+                Width="100"
+                Margin="460, 530, 0, 0"
+                HorizontalAlignment="Left"
+                VerticalContentAlignment="Center"
+                Background="BlueViolet"
+                Foreground="White"
+                />
+        <Border 
+                BorderThickness="2"
+                BorderBrush="Black"
+                Width="800"
+                Height="480">
+            <ItemsControl ItemsSource="{Binding Balls}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas Name="BallBoard"
+                                Width="798"
+                                Height="478">
+                        </Canvas>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style>
+                        <Setter Property="Canvas.Left" Value="{Binding Position.X}"/>
+                        <Setter Property="Canvas.Top" Value="{Binding Position.Y}"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Ellipse
+                                Height="{Binding Diameter}"
+                                Width="{Binding Diameter}"
+                                Margin="0, 0, 0, 0">
+                            <Ellipse.Fill>
+                                <SolidColorBrush Color="BlueViolet"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
+    </Canvas>
+</UserControl>
