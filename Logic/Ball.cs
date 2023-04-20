@@ -3,7 +3,7 @@
     // Define the Ball class as public and implement the IEquatable interface for the Ball class.
     internal class Ball : IBall, IEquatable<Ball>
     {
-        // Define public properties for the ball's velocity, position, radius, and diameter.
+        // Define private properties for the ball's velocity, position, radius, and diameter.
         private Vector2 _velocity;
         private Vector2 _position;
         private int _radius;
