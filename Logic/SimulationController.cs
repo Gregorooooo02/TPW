@@ -16,7 +16,7 @@ namespace Logic
             _observers = new HashSet<IObserver<IEnumerable<Ball>>>(); // Initialize the set of observers.
         }
 
-        public override IEnumerable<Ball> Balls => _simulationManager.Balls; // Implement the Balls property from the AbstractLogicAPI interface.
+        internal override IEnumerable<Ball> Balls => _simulationManager.Balls; // Implement the Balls property from the AbstractLogicAPI interface.
 
         public override void SpawnBalls(int numberOfBalls)
         {
@@ -50,7 +50,7 @@ namespace Logic
             }
         }
 
-        public override IDisposable Subscribe(IObserver<IEnumerable<Ball>> observer)
+        public override IDisposable Subscribe(IObserver<IEnumerable<IBall>> observer)
         {
             _observers.Add(observer); // Add a new observer to the set of observers.
 

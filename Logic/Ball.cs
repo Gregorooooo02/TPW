@@ -1,15 +1,13 @@
-﻿using System.Numerics;
-
-namespace Logic
+﻿namespace Logic
 {
     // Define the Ball class as public and implement the IEquatable interface for the Ball class.
-    public class Ball : IEquatable<Ball>
+    internal class Ball : IBall, IEquatable<Ball>
     {
         // Define public properties for the ball's velocity, position, radius, and diameter.
-        public Vector2 Velocity { get; private set; }
-        public Vector2 Position { get; private set; }
-        public int Radius { get; init; }
-        public int Diameter { get; init; }
+        private Vector2 _velocity;
+        private Vector2 _position;
+        private int _radius;
+        private int _diameter;
 
         // Define a constructor for creating a ball with a specified velocity, position, and diameter.
         public Ball(float xVel, float yVel, int x, int y, int diameter)
@@ -18,11 +16,37 @@ namespace Logic
         // Define a constructor for creating a ball with a specified velocity, position, and diameter.
         public Ball(Vector2 velocity, Vector2 position, int diameter)
         {
-            Velocity = velocity;
-            Position = position;
-            Diameter = diameter;
-            Radius = diameter / 2;
+            _velocity = velocity;
+            _position = position;
+            _diameter = diameter;
+            _radius = diameter / 2;
         }
+
+        #region IBall
+        public Vector2 Velocity
+        {
+            get { return _velocity; }
+            private set { _velocity = value; }
+        }
+
+        public Vector2 Position
+        {
+            get { return _position; }
+            private set { _position = value; }
+        }
+
+        public int Radius
+        {
+            get { return _radius; }
+            private set { _radius = value; }
+        }
+
+        public int Diameter
+        {
+            get { return _diameter; }
+            private set { _diameter = value; }
+        }
+        #endregion
 
         // Define a method for moving the ball within the specified x and y borders.
         public void Move(Vector2 xBorder, Vector2 yBorder, float force = 1f)

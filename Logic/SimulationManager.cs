@@ -1,6 +1,6 @@
 ﻿namespace Logic
 {
-    public class SimulationManager
+    internal class SimulationManager
     {
         private Window _window; // The window in which the simulation takes place.
         private int _ballDiameter; // The diameter of the balls.
