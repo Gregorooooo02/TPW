@@ -2,7 +2,7 @@
 
 namespace ViewModel
 {
-    public class StopSimulationInput : Command
+    internal class StopSimulationInput : Command
     {
         private SimulationViewModel _simulationViewModel;
 

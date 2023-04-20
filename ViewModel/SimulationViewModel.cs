@@ -6,16 +6,16 @@ namespace ViewModel
 {
     // This class represents the ViewModel for the simulation View.
     // It implements the IObserver interface to receive notifications from the Model when the collection of BallModel objects changes.
-    public class SimulationViewModel : ViewModel, IObserver<IEnumerable<BallModel>>
+    internal class SimulationViewModel : ViewModel, IObserver<IEnumerable<IBallModel>>
     {
         private IDisposable? _unsubscriber;
-        private ObservableCollection<BallModel> _balls;
+        private ObservableCollection<IBallModel> _balls;
         private AbstractModelAPI _logic;
         private int _ballCount;
         private bool _isSimulationRunning = false;
 
         // This property returns the collection of BallModel objects that are currently displayed in the UI.
-        public IEnumerable<BallModel> Balls { get { return _balls; } }
+        public IEnumerable<IBallModel> Balls { get { return _balls; } }
 
         // These properties represent the Start and Stop buttons in the UI and the commands that are executed when they are clicked.
         public ICommand StartSimulationInput { get; init; }
@@ -25,7 +25,7 @@ namespace ViewModel
         {
             // If no AbstractModelAPI object is provided, create a new one using the CreateInstance method.
             _logic = model ?? AbstractModelAPI.CreateInstance();
-            _balls = new ObservableCollection<BallModel>();
+            _balls = new ObservableCollection<IBallModel>();
 
             // Initialize the Start and Stop commands with new instances of the respective input classes.
             StartSimulationInput = new StartSimulationInput(this);
@@ -66,7 +66,7 @@ namespace ViewModel
 
         #region Observer
         // This method is called when the ViewModel is subscribed to the Model's notifications.
-        public void Subscriber(IObservable<IEnumerable<BallModel>> provider)
+        public void Subscriber(IObservable<IEnumerable<IBallModel>> provider)
         {
             _unsubscriber = provider.Subscribe(this);
         }
@@ -84,15 +84,15 @@ namespace ViewModel
         }
 
         // This method is called when the collection of BallModel objects in the Model changes.
-        public void OnNext(IEnumerable<BallModel> balls)
+        public void OnNext(IEnumerable<IBallModel> balls)
         {
             if (balls is null)
             {
-                balls = new List<BallModel>();
+                balls = new List<IBallModel>();
             }
 
             // Update the collection of BallModel objects in the ViewModel and notify the UI that the Balls property has changed.
-            _balls = new ObservableCollection<BallModel>(balls);
+            _balls = new ObservableCollection<IBallModel>(balls);
             OnPropertyChanged(nameof(Balls));
         }
         #endregion
