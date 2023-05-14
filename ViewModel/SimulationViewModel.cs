@@ -4,97 +4,76 @@ using System.Windows.Input;
 
 namespace ViewModel
 {
-    // This class represents the ViewModel for the simulation View.
-    // It implements the IObserver interface to receive notifications from the Model when the collection of BallModel objects changes.
-    internal class SimulationViewModel : ViewModel, IObserver<IEnumerable<IBallModel>>
+    public class SimulationViewModel : ViewModel, IObserver<IBallModel>
     {
-        private IDisposable? _unsubscriber;
-        private ObservableCollection<IBallModel> _balls;
-        private AbstractModelAPI _logic;
-        private int _ballCount;
+        private readonly AbstractModelAPI _model;
+        private readonly IValidator<int> _ballsCountValidator;
+
+        private int _ballsCount = 8;
         private bool _isSimulationRunning = false;
+        private IDisposable? unsubscriber;
 
-        // This property returns the collection of BallModel objects that are currently displayed in the UI.
-        public IEnumerable<IBallModel> Balls { get { return _balls; } }
-
-        // These properties represent the Start and Stop buttons in the UI and the commands that are executed when they are clicked.
+        public int BallsCount
+        {
+            get => _ballsCount;
+            set => SetField(ref _ballsCount, value, _ballsCountValidator, 1);
+        }
+        public bool IsSimulationRunning
+        {
+            get => _isSimulationRunning;
+            private set => SetField(ref _isSimulationRunning, value);
+        }
+        public ObservableCollection<IBallModel> Balls { get; } = new();
         public ICommand StartSimulationInput { get; init; }
         public ICommand StopSimulationInput { get; init; }
 
-        public SimulationViewModel(AbstractModelAPI? model = default) : base()
+        public SimulationViewModel(AbstractModelAPI? model = default, IValidator<int>? ballsCountValidator = default)
+            : base()
         {
-            // If no AbstractModelAPI object is provided, create a new one using the CreateInstance method.
-            _logic = model ?? AbstractModelAPI.CreateInstance();
-            _balls = new ObservableCollection<IBallModel>();
+            _model = model ?? AbstractModelAPI.CreateInstance();
+            _ballsCountValidator = ballsCountValidator ?? new BallsCountValidator();
 
-            // Initialize the Start and Stop commands with new instances of the respective input classes.
             StartSimulationInput = new StartSimulationInput(this);
             StopSimulationInput = new StopSimulationInput(this);
-
-            // Subscribe to notifications from the Model.
-            Subscriber(_logic);
         }
 
-        // This property represents the number of BallModel objects that should be created when the simulation is started.
-        public int BallsCount
-        {
-            get => _ballCount;
-            set { SetField(ref _ballCount, value); }
-        }
-
-        // This property represents whether the simulation is currently running or not.
-        public bool IsSimulationRunning
-        {
-            get { return _isSimulationRunning; }
-            private set { SetField(ref _isSimulationRunning, value); }
-        }
-
-        // This method starts the simulation.
         public void StartSimulation()
         {
             IsSimulationRunning = true;
-            _logic.SpawnBalls(BallsCount);
-            _logic.Start();
+            Follow(_model);
+            _model.Start(BallsCount);
         }
 
-        // This method stops the simulation.
         public void StopSimulation()
         {
             IsSimulationRunning = false;
-            _logic.Stop();
+            Balls.Clear();
+            _model.Stop();
         }
 
         #region Observer
-        // This method is called when the ViewModel is subscribed to the Model's notifications.
-        public void Subscriber(IObservable<IEnumerable<IBallModel>> provider)
+
+        public void Follow(IObservable<IBallModel> provider)
         {
-            _unsubscriber = provider.Subscribe(this);
+            unsubscriber = provider.Subscribe(this);
         }
 
-        // This method is called when the Model has finished sending notifications.
         public void OnCompleted()
         {
-            _unsubscriber?.Dispose();
+            unsubscriber?.Dispose();
         }
 
-        // This method is called when an error occurs while the Model is sending notifications.
         public void OnError(Exception error)
         {
             throw error;
         }
 
-        // This method is called when the collection of BallModel objects in the Model changes.
-        public void OnNext(IEnumerable<IBallModel> balls)
+        public void OnNext(IBallModel ball)
         {
-            if (balls is null)
-            {
-                balls = new List<IBallModel>();
-            }
-
-            // Update the collection of BallModel objects in the ViewModel and notify the UI that the Balls property has changed.
-            _balls = new ObservableCollection<IBallModel>(balls);
-            OnPropertyChanged(nameof(Balls));
+            Balls.Add(ball);
         }
+
         #endregion
     }
+
 }

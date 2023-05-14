@@ -8,6 +8,6 @@
         Title="Projekt Kulki" 
         ResizeMode="NoResize" Height="630" Width="835">
     <Grid Background="White">
-        <views:SimulationWindow DataContext="{Binding ViewModel}" Margin="10,10,-10,-10"/>
+        <views:SimulationWindow DataContext="{Binding CurrentViewModel}" Margin="10,10,-10,-10"/>
     </Grid>
 </Window>
