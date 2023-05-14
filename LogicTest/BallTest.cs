@@ -6,62 +6,70 @@ namespace Tests
     [TestClass]
     public class BallTest
     {
-        private static readonly float testVelocityX = 0.2f;
-        private static readonly float testVelocityY = -0.1f;
-        private static readonly int testPositionX = 5;
-        private static readonly int testPositionY = 5;
-        private static readonly int testDiameter = 2;
+        private static readonly int TestXPos = 5;
+        private static readonly int TestYPos = 5;
+        private static readonly float TestXSpeed = 0.2f;
+        private static readonly float TestYSpeed = -0.1f;
+        private static readonly int TestDiameter = 2;
+        float acceptableDifference = 0.1f;
 
-        Ball testBall;
+        private readonly Ball _testBall;
+        private readonly Window _testBoard;
 
         public BallTest()
         {
-            Vector2 position = new Vector2(testPositionX, testPositionY);
-            Vector2 velocity = new Vector2(testVelocityX, testVelocityY);
+            Vector2 position = new Vector2(TestXPos, TestYPos);
+            Vector2 speed = new Vector2(TestXSpeed, TestYSpeed);
 
-            testBall = new Ball(velocity, position, testDiameter);
+            _testBoard = new Window(100, 100);
+            _testBall = new Ball(TestDiameter, position, speed, _testBoard);
         }
 
         [TestMethod]
         public void ConstructorTest()
         {
-            Assert.IsNotNull(testBall);
+            Assert.IsNotNull(_testBall);
 
-            Assert.AreEqual((int)testBall.Position.X, testPositionX);
-            Assert.AreEqual((int)testBall.Position.Y, testPositionY);
-            Assert.AreEqual(testBall.Diameter, testDiameter);
+            Assert.AreEqual((int)_testBall.Position.X, TestXPos);
+            Assert.AreEqual((int)_testBall.Position.Y, TestYPos);
+            Assert.AreEqual(_testBall.Diameter, TestDiameter);
         }
 
         [TestMethod]
         public void MoveTest()
         {
-            Ball ball = new Ball(new Vector2(0, 0), new Vector2(testPositionX, testPositionY), testDiameter);
-            Vector2 xBorder = new Vector2(0, 100);
-            Vector2 yBorder = new Vector2(0, 100);
+            float delta = 100f;
+            Ball ball = new Ball(TestDiameter, new Vector2(TestXPos, TestYPos), Vector2.Zero, _testBoard);
 
-            ball.IncreaseVelocity(new Vector2(-2.5f, 0));
-            Assert.AreEqual(ball.Velocity.X, -2.5f);
+            ball.Velocity = new Vector2(0f, -2.5f);
+            Assert.AreEqual(0f, ball.Velocity.X);
 
-            ball.Move(xBorder, yBorder);
-            Assert.AreEqual(ball.Position.Y, testPositionY);
-            Assert.AreEqual(ball.Position.X, testPositionX - 2.5f);
+            ball.Move(delta);
+            Assert.AreEqual(TestXPos, ball.Position.X);
 
-            ball.Move(xBorder, yBorder);
-            ball.Move(xBorder, yBorder);
-            ball.Move(xBorder, yBorder);
+            ball.Move(delta);
+            ball.Move(delta);
+            ball.Move(delta);
 
-            ball.IncreaseVelocity(new Vector2(-2.5f, -2.5f));
-            Assert.AreEqual(ball.Velocity, new Vector2(0, -2.5f));
+            ball.Velocity = new Vector2(3f, 5f);
+            Assert.AreEqual(ball.Velocity, new Vector2(3f, 5f));
 
-            ball.Move(xBorder, yBorder);
-            Assert.AreEqual(ball.Position.Y, testPositionY - 2.5f);
+            ball.Move(delta);
+            Assert.AreEqual(5f, ball.Position.Y, acceptableDifference);
+
+            ball.Move(delta);
+            ball.Move(delta);
+            ball.Move(delta);
+
+            Assert.AreEqual(17f, ball.Position.X, acceptableDifference);
+            Assert.AreEqual(20f, ball.Position.Y, acceptableDifference);
         }
 
         [TestMethod]
         public void EqualTest()
         {
-            Ball secondBall = testBall;
-            Assert.AreEqual(testBall, secondBall);
+            Ball newBall = _testBall;
+            Assert.AreEqual(_testBall, newBall);
         }
     }
 }
