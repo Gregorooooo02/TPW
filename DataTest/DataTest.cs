@@ -21,7 +21,9 @@ namespace Tests
 
             Assert.AreNotEqual(data.WindowHeight, default);
             Assert.AreNotEqual(data.WindowWidth, default);
-            Assert.AreNotEqual(data.BallDiameter, default);
+            Assert.AreNotEqual(data.MinDiameter, default);
+            Assert.AreNotEqual(data.MaxDiameter, default);
+            Assert.AreNotEqual(data.MaxSpeed, default);
         }
     }
 }

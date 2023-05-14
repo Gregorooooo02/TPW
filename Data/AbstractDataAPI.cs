@@ -6,7 +6,9 @@
         // Define abstract properties for the window height, window width, and ball diameter.
         public abstract int WindowHeight { get; }
         public abstract int WindowWidth { get; }
-        public abstract int BallDiameter { get; }
+        public abstract float MaxSpeed { get; }
+        public abstract int MinDiameter { get; }
+        public abstract int MaxDiameter { get; }
 
         // Define a static method to create an instance of the AbstractDataAPI class.
         public static AbstractDataAPI CreateInstance()

@@ -12,7 +12,7 @@ namespace Logic
         public SimulationController(AbstractDataAPI? data = default)
         {
             _data = data ?? AbstractDataAPI.CreateInstance(); // If a data object is not provided, create a default one.
-            _simulationManager = new SimulationManager(new Window(_data.WindowWidth, _data.WindowHeight), _data.BallDiameter); // Create a new SimulationManager object with the window and ball diameter provided by the data object.
+            _simulationManager = new SimulationManager(new Window(_data.WindowWidth, _data.WindowHeight), _data.MinDiameter); // Create a new SimulationManager object with the window and ball diameter provided by the data object.
             _observers = new HashSet<IObserver<IEnumerable<Ball>>>(); // Initialize the set of observers.
         }
 
