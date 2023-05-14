@@ -1,37 +1,31 @@
 ﻿using Logic; // Importing the namespace Logic, which contains the AbstractLogicAPI class.
+using System.ComponentModel;
 
 namespace Model
 {
     // Abstract class that implements the IObserver and IObservable interfaces with generic type parameters.
-    public abstract class AbstractModelAPI : IObserver<IEnumerable<IBall>>, IObservable<IEnumerable<IBallModel>>
+    public abstract class AbstractModelAPI : IObserver<IBall>, IObservable<IBallModel>
     {
-        // Abstract methods that must be implemented by the derived classes:
-        public abstract void SpawnBalls(int numberOfBalls);
-
-        public abstract void Start();
-
-        public abstract void Stop();
-
-        public abstract void OnCompleted();
-
-        public abstract void OnError(Exception error);
-
-        public abstract void OnNext(IEnumerable<IBall> balls);
-
-        public abstract IDisposable Subscribe(IObserver<IEnumerable<IBallModel>> observer);
-
-        // Static method that creates an instance of the Model class, passing a logic instance if provided.
         public static AbstractModelAPI CreateInstance(AbstractLogicAPI? logic = default)
         {
             return new Model(logic ?? AbstractLogicAPI.CreateInstance());
         }
+
+        public abstract void Start(int count);
+        public abstract void Stop();
+
+        public abstract IDisposable Subscribe(IObserver<IBallModel> observer);
+
+        public abstract void OnCompleted();
+        public virtual void OnError(Exception error) => throw error;
+        public abstract void OnNext(IBall value);
     }
 
-    public interface IBallModel
+    public interface IBallModel : IObserver<IBall>, INotifyPropertyChanged
     {
-        Vector2 Velocity { get; }
-        Vector2 Position { get; }
-        int Radius { get; }
-        int Diameter { get; }
+        public int Diameter { get; }
+        public int Radius { get; }
+        public Vector2 Velocity { get; }
+        public Vector2 Position { get; }
     }
 }

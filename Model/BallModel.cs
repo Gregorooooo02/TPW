@@ -1,47 +1,62 @@
-﻿using Logic; // Importing the namespace Logic, which contains the Ball class.
+﻿using Logic;
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Model
 {
-    internal class BallModel : IBallModel
+    public class BallModel : IBallModel
     {
-        private IBall _ball; // Private field to store the Ball object.
-        private Vector2 _velocity => _ball.Velocity;
-        private Vector2 _position => CalcOffsetPosition(_ball.Position);
-        private int _radius => _ball.Radius;
-        private int _diameter => _ball.Diameter;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        #region IBallModel
-        public Vector2 Velocity
-        {
-            get { return _velocity; }
-        }
+        public int Diameter => _ball.Diameter;
+        public int Radius => _ball.Radius;
+        public Vector2 Position => CalculateOffsetPosition(_ball.Position);
+        public Vector2 Velocity => _ball.Velocity;
 
-        public Vector2 Position
-        {
-            get { return _position; }
-        }
+        private readonly IBall _ball;
 
-        public int Radius
-        {
-            get { return _radius; }
-        }
+        private IDisposable? _unsubscriber;
 
-        public int Diameter
-        {
-            get { return _diameter; }
-        }
-        #endregion
-
-        // Constructor that takes a Ball object and initializes the private field.
         public BallModel(IBall ball)
         {
             _ball = ball;
+            Follow(_ball);
         }
 
-        // Private method that calculates the offset position of the Ball based on its radius.
-        private Vector2 CalcOffsetPosition(Vector2 position)
+        private Vector2 CalculateOffsetPosition(Vector2 position)
         {
             return new Vector2(position.X - Radius, position.Y - Radius);
         }
+
+        #region Observer
+
+        public void Follow(IObservable<IBall> provider)
+        {
+            _unsubscriber = provider.Subscribe(this);
+        }
+
+        public void OnError(Exception error)
+        {
+            throw error;
+        }
+
+        public void OnCompleted()
+        {
+            _unsubscriber?.Dispose();
+        }
+
+        public void OnNext(IBall ball)
+        {
+            OnPropertyChanged(nameof(Position));
+        }
+
+        #endregion
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
+
 }
