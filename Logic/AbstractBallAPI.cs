@@ -19,7 +19,7 @@ namespace Logic
         public abstract int GetNumberOfBalls();
 
 
-        public static AbstractBallAPI CreateApi(int windowHeight, int windowWidth, AbstractDataAPI data)
+        public static AbstractBallAPI CreateInstance(int windowHeight, int windowWidth, AbstractDataAPI data)
         {
             if (data == null)
             {

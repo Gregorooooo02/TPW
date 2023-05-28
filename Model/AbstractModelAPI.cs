@@ -1,31 +1,25 @@
-﻿using Logic; // Importing the namespace Logic, which contains the AbstractLogicAPI class.
-using System.ComponentModel;
+﻿using Logic;
+using System.Collections.ObjectModel;
 
 namespace Model
 {
-    // Abstract class that implements the IObserver and IObservable interfaces with generic type parameters.
-    public abstract class AbstractModelAPI : IObserver<IBall>, IObservable<IBallModel>
+    public abstract class AbstractModelAPI
     {
-        public static AbstractModelAPI CreateInstance(AbstractBallAPI? logic = default)
+        public abstract void StartSimulation();
+        public abstract void StopSimulation();
+        public abstract void SpawnBall();
+        public abstract ObservableCollection<object> GetBalls();
+
+        public static AbstractModelAPI CreateInstance(int windowHeight, int windowWidth, AbstractBallAPI logicAPI)
         {
-            return new Model(logic ?? AbstractBallAPI.CreateInstance());
+            if (logicAPI == null)
+            {
+                return new Model(AbstractBallAPI.CreateInstance(windowHeight, windowWidth, null));
+            }
+            else
+            {
+                return new Model(logicAPI);
+            }
         }
-
-        public abstract void Start(int count);
-        public abstract void Stop();
-
-        public abstract IDisposable Subscribe(IObserver<IBallModel> observer);
-
-        public abstract void OnCompleted();
-        public virtual void OnError(Exception error) => throw error;
-        public abstract void OnNext(IBall value);
-    }
-
-    public interface IBallModel : IObserver<IBall>, INotifyPropertyChanged
-    {
-        public int Diameter { get; }
-        public int Radius { get; }
-        public Vector2 Velocity { get; }
-        public Vector2 Position { get; }
     }
 }
