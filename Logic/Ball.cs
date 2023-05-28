@@ -1,209 +1,177 @@
 ﻿using Data;
+using System.ComponentModel;
+using System.Numerics;
+using System.Reflection.Metadata;
 
 namespace Logic
 {
-
-    public class Ball : IBall, IEquatable<Ball>
+    internal class Ball : AbstractBallAPI
     {
-        private readonly object positionLock = new();
-        private readonly object velocityLock = new();
+        public override int WindowHeight { get; }
+        public override int WindowWidth { get; }
+        public override List<AbstractBallDataAPI> BallsList { get; }
+        private static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+        private AbstractDataAPI dataAPI;
 
-        public int Diameter { get; init; }
-        public int Radius { get; init; }
-
-
-        public Vector2 Velocity
-        {
-            get
-            {
-                lock (velocityLock)
-                {
-                    return _velocity;
-                }
-            }
-            set
-            {
-                lock (velocityLock)
-                {
-                    _velocity = value;
-                }
-            }
-        }
-        public Vector2 Position
-        {
-            get
-            {
-                lock (positionLock)
-                {
-                    return _position;
-                }
-            }
-            private set
-            {
-                lock (positionLock)
-                {
-                    if (_position == value) return;
-                    _position = value;
-                    TrackBall(this);
-                }
-            }
-        }
-        private readonly ISet<IObserver<IBall>> _observers;
-        private readonly Window _board;
-        private readonly IBallData _ballDto;
-
-        private IDisposable? _disposer;
-        private IDisposable? _unsubscriber;
-        private Vector2 _velocity;
+        private int _velocityX;
+        private int _velocityY;
         private Vector2 _position;
 
-        // Constructors:
-        public Ball(int diameter, Vector2 position, Vector2 speed, Window board, IBallData? ballDto = default)
+        public Ball(AbstractDataAPI dataAPI)
         {
-            Diameter = diameter;
-            Position = position;
-            Velocity = speed;
-            Radius = diameter / 2;
-            _board = board;
-            _ballDto = ballDto ?? new BallData(Diameter, Position.X, Position.Y, Velocity.X, Velocity.Y);
-
-            _observers = new HashSet<IObserver<IBall>>();
-            _disposer = ThreadManager.Add<float>(Move);
-            Follow(_ballDto);
+            this.WindowHeight = dataAPI.WindowHeight;
+            this.WindowWidth = dataAPI.WindowWidth;
+            BallsList = new List<AbstractBallDataAPI>();
+            this.dataAPI = dataAPI;
         }
-        public Ball(int diameter, int posX, int posY, float speedX, float speedY, Window board, IBallData? ballDto = default)
-      : this(diameter, new Vector2(posX, posY), new Vector2(speedX, speedY), board, ballDto)
-        { }
 
-        public void Move(float delta)
+        public override int GetNumberOfBalls()
         {
-            if (Velocity.IsZero()) return;
+            return BallsList.Count;
+        }
 
-            float strength = (delta * 0.01f).Clamp(0f, 1f);
-
-            var move = Velocity * strength;
-            var (posX, posY) = Position;
-            var (newSpeedX, newSpeedY) = Velocity;
-
-            var (boundryXx, boundryXy) = _board.XBoundry;
-            if (!posX.Between(boundryXx, boundryXy, Radius))
+        public override int GetPositionX(int ballIndex)
+        {
+            if (ballIndex < BallsList.Count && ballIndex >= 0)
             {
-                if (posX <= boundryXx + Radius)
+                return (int)BallsList[ballIndex].Position.X;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        public override int GetPositionY(int ballIndex)
+        {
+            if (ballIndex < BallsList.Count && ballIndex >= 0)
+            {
+                return (int)BallsList[ballIndex].Position.Y;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        public override int GetRadius(int ballIndex)
+        {
+            if (ballIndex < BallsList.Count && ballIndex >= 0)
+            {
+                return BallsList[ballIndex].Radius;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        public override void SpawnBall()
+        {
+            AbstractBallDataAPI _ball = dataAPI.spawnBalls(true);
+
+            BallsList.Add(_ball);
+            _ball.AddPropertyChangedListener(CollisionCheck);
+        }
+
+        public override void StartSimulation()
+        {
+            foreach (var _ball in BallsList)
+            {
+                _ball.isRunning = true;
+            }
+        }
+
+        public override void StopSimulation()
+        {
+            foreach (var _ball in BallsList)
+            {
+                _ball.isRunning = false;
+            }
+        }
+
+        private void CollideWindow(AbstractBallDataAPI _ball)
+        {
+            _lock.EnterWriteLock();
+
+            try
+            {
+                _velocityX = _ball.VelocityX;
+                _velocityY = _ball.VelocityY;
+                _position = _ball.Position;
+
+                if (_position.X + _ball.VelocityX < 0 || _position.X + _ball.VelocityX >= WindowWidth)
                 {
-                    newSpeedX = MathF.Abs(newSpeedX);
+                    _velocityX = -_velocityX;
                 }
-                else
+
+                if (_position.Y + _ball.VelocityY < 0 || _position.Y + _ball.VelocityY >= WindowHeight)
                 {
-                    newSpeedX = -MathF.Abs(newSpeedX);
+                    _velocityY = -_velocityY;
                 }
+
+                _ball.setVelocity(_velocityX, _velocityY);
             }
-            var (boundryYx, boundryYy) = _board.YBoundry;
-            if (!posY.Between(boundryYx, boundryYy, Radius))
+            finally
             {
-                if (posY <= boundryYx + Radius)
+                _lock.ExitWriteLock();
+            }
+        }
+
+        private bool CollideBallWithBall(AbstractBallDataAPI _firstBall, AbstractBallDataAPI _secondBall)
+        {
+            Vector2 _position1 = _firstBall.Position;
+            Vector2 _position2 = _secondBall.Position;
+
+            int distance = (int)Math.Sqrt(Math.Pow((_position1.X + _firstBall.VelocityX) - (_position2.X + _secondBall.VelocityX), 2) + Math.Pow((_position1.Y + _firstBall.VelocityY) - (_position2.Y + _secondBall.VelocityY), 2));
+
+            if (distance <= _firstBall.Radius / 2 + _secondBall.Radius / 2)
+            {
+                _lock.EnterWriteLock();
+
+                try
                 {
-                    newSpeedY = MathF.Abs(newSpeedY);
+                    int _firstVelX = _firstBall.VelocityX;
+                    int _firstVelY = _firstBall.VelocityY;
+                    int _secondVelX = _secondBall.VelocityX;
+                    int _secondVelY = _secondBall.VelocityY;
+
+                    int _updatedFirstVX, _updatedFirstVY;
+                    int _updatedSecondVX, _updatedSecondVY;
+
+                    _updatedFirstVX = (_firstVelX * (_firstBall.Mass - _secondBall.Mass) + 2 * _secondBall.Mass * _secondVelX) / (_firstBall.Mass + _secondBall.Mass);
+                    _updatedFirstVY = (_firstVelY * (_firstBall.Mass - _secondBall.Mass) + 2 * _secondBall.Mass * _secondVelY) / (_firstBall.Mass + _secondBall.Mass);
+                    _updatedSecondVX = (_secondVelX * (_secondBall.Mass - _firstBall.Mass) + 2 * _firstBall.Mass * _firstVelX) / (_firstBall.Mass + _secondBall.Mass);
+                    _updatedSecondVY = (_secondVelY * (_secondBall.Mass - _firstBall.Mass) + 2 * _firstBall.Mass * _firstVelY) / (_firstBall.Mass + _secondBall.Mass);
+
+                    _firstBall.setVelocity(_updatedFirstVX, _updatedFirstVY);
+                    _secondBall.setVelocity(_updatedSecondVX, _updatedSecondVY);
                 }
-                else
+                finally
                 {
-                    newSpeedY = -MathF.Abs(newSpeedY);
+                    _lock.ExitWriteLock();
+                }
+                return false;
+            }
+            return true;
+        }
+
+        private void CollisionCheck(object sender, PropertyChangedEventArgs e)
+        {
+            AbstractBallDataAPI _ball = (AbstractBallDataAPI)sender;
+
+            if (_ball != null)
+            {
+                CollideWindow(_ball);
+
+                foreach (var _secondBall in BallsList)
+                {
+                    if (!_secondBall.Equals(_ball))
+                    {
+                        CollideBallWithBall(_ball, _secondBall);
+                    }
                 }
             }
-
-            _ballDto?.SetSpeed(newSpeedX, newSpeedY);
-            _ballDto?.Move(move.X, move.Y);
         }
-
-        public bool Touches(IBall ball)
-        {
-            int minDistance = this.Radius + ball.Radius;
-            float minDistanceSquared = minDistance * minDistance;
-            float actualDistanceSquared = Vector2.DistanceSquared(this.Position, ball.Position);
-
-            return minDistanceSquared >= actualDistanceSquared;
-        }
-
-        public void Follow(IObservable<IBallData> provider)
-        {
-            _unsubscriber = provider.Subscribe(this);
-        }
-
-        public void OnCompleted()
-        {
-            _unsubscriber?.Dispose();
-        }
-
-        public void OnError(Exception error) => throw error;
-
-        public void OnNext(IBallData ballDto)
-        {
-            Position = new Vector2(ballDto.PositionX, ballDto.PositionY);
-            Velocity = new Vector2(ballDto.SpeedX, ballDto.SpeedY);
-        }
-
-        public IDisposable Subscribe(IObserver<IBall> observer)
-        {
-            _observers.Add(observer);
-            return new Unsubscriber(_observers, observer);
-        }
-
-        public void TrackBall(IBall ball)
-        {
-            if (_observers is null) return;
-            foreach (var observer in _observers)
-            {
-                observer.OnNext(ball);
-            }
-        }
-
-        private class Unsubscriber : IDisposable
-        {
-            private readonly ISet<IObserver<IBall>> _observers;
-            private readonly IObserver<IBall> _observer;
-
-            public Unsubscriber(ISet<IObserver<IBall>> observers, IObserver<IBall> observer)
-            {
-                _observers = observers;
-                _observer = observer;
-            }
-
-            public void Dispose()
-            {
-                _observers.Remove(_observer);
-            }
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-            _disposer?.Dispose();
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is Ball ball
-                && Equals(ball);
-        }
-
-        // Define the IEquatable.Equals method to compare two Ball objects for equality.
-        public bool Equals(Ball? other)
-        {
-            return other is not null
-                && Velocity == other.Velocity
-                && Position == other.Position
-                && Diameter == other.Diameter;
-        }
-
-        // Override the GetHashCode method to return a hash code for the Ball object.
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Velocity, Position, Diameter);
-        }
-
-        public override string? ToString()
-        {
-            return $"Ball d={Diameter}, P=[{Position.X:n1}, {Position.Y:n1}], S=[{Velocity.X:n1}, {Velocity.Y:n1}]";
-        }
-
     }
 }
