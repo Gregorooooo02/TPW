@@ -5,9 +5,9 @@ namespace Logic
     /*
      * Define a public abstract class for a Logic API that implements IObservable and IDisposable
      */
-    public abstract class AbstractLogicAPI : IObservable<IBall>, IDisposable
+    public abstract class AbstractBallAPI : IObservable<IBall>, IDisposable
     {
-        public static AbstractLogicAPI CreateInstance(AbstractDataAPI? data = default)
+        public static AbstractBallAPI CreateInstance(AbstractDataAPI? data = default)
         {
             return new Logic(data ?? AbstractDataAPI.CreateInstance());
         }
