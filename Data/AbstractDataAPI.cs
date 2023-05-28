@@ -3,18 +3,18 @@
     // Define the AbstractDataAPI class as abstract
     public abstract class AbstractDataAPI
     {
-        // Define abstract properties for the window height, window width, and ball diameter.
-        public abstract int WindowHeight { get; }
-        public abstract int WindowWidth { get; }
-        public abstract float MaxSpeed { get; }
-        public abstract int MinDiameter { get; }
-        public abstract int MaxDiameter { get; }
+        // Define abstract methods for Window Height and Window Width
+        public abstract int getWindowHeight();
+        public abstract int getWindowWidth();
+
+        // Define abstract method for spawning balls in randomized position
+        public abstract AbstractDataAPI spawnBalls(bool isRunning);
 
         // Define a static method to create an instance of the AbstractDataAPI class.
-        public static AbstractDataAPI CreateInstance()
+        public static AbstractDataAPI CreateInstance(int windowHeight, int windowWidth)
         {
             // Return a new instance of the Data class.
-            return new Data();
+            return new Data(windowHeight, windowWidth);
         }
     }
 }
