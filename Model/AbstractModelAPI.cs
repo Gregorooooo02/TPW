@@ -6,9 +6,9 @@ namespace Model
     // Abstract class that implements the IObserver and IObservable interfaces with generic type parameters.
     public abstract class AbstractModelAPI : IObserver<IBall>, IObservable<IBallModel>
     {
-        public static AbstractModelAPI CreateInstance(AbstractLogicAPI? logic = default)
+        public static AbstractModelAPI CreateInstance(AbstractBallAPI? logic = default)
         {
-            return new Model(logic ?? AbstractLogicAPI.CreateInstance());
+            return new Model(logic ?? AbstractBallAPI.CreateInstance());
         }
 
         public abstract void Start(int count);

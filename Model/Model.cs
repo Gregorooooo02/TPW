@@ -4,15 +4,15 @@ namespace Model
 {
     internal class Model : AbstractModelAPI
     {
-        private readonly AbstractLogicAPI _logic;
+        private readonly AbstractBallAPI _logic;
         private readonly ISet<IObserver<IBallModel>> _observers;
         private readonly IDictionary<IBall, IBallModel> _ballToBallModel;
 
         private IDisposable? _unsubscriber;
 
-        public Model(AbstractLogicAPI? logic = default)
+        public Model(AbstractBallAPI? logic = default)
         {
-            _logic = logic ?? AbstractLogicAPI.CreateInstance();
+            _logic = logic ?? AbstractBallAPI.CreateInstance();
             _observers = new HashSet<IObserver<IBallModel>>();
             _ballToBallModel = new Dictionary<IBall, IBallModel>();
         }
