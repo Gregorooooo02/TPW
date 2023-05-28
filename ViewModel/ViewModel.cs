@@ -19,6 +19,7 @@ namespace ViewModel
             _modelAPI = AbstractModelAPI.CreateInstance(windowHeight, windowWidth, null);
             StartSimInput = new Command(StartSimulation);
             StopSimInput = new Command(StopSimulation);
+            SpawnBallInput = new Command(SpawnBall);
             Balls = GetBalls();
         }
 

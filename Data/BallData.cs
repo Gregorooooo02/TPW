@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 
 namespace Data
 {
@@ -14,11 +15,6 @@ namespace Data
         private int _mass;
 
         private bool _isRunning;
-
-        private int _x;
-        private int _y;
-        private Vector2 _updatedPosition;
-        private double _velocity;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -53,8 +49,10 @@ namespace Data
 
         private void setPosition(Vector2 position)
         {
-            this._position.X = position.X;
-            this._position.Y = position.Y;
+            _position.X = position.X;
+            _position.Y = position.Y;
+            OnPropertyChanged(nameof(Position.X));
+            OnPropertyChanged(nameof(Position.Y));
         }
 
         private async Task Move()
@@ -63,13 +61,13 @@ namespace Data
             {
                 if (isRunning)
                 {
-                    _x = (int)_position.X + _velocityX;
-                    _y = (int)_position.Y + _velocityY;
-                    _updatedPosition = new Vector2(_x, _y);
+                    int _x = (int)_position.X + _velocityX;
+                    int _y = (int)_position.Y + _velocityY;
+                    Vector2 _updatedPosition = new Vector2(_x, _y);
 
                     setPosition(_updatedPosition);
                 }
-                _velocity = Math.Sqrt(_velocityX + _velocityX + _velocityY * _velocityY);
+                double _velocity = Math.Sqrt(_velocityX * _velocityX + _velocityY * _velocityY);
                 await Task.Delay(TimeSpan.FromMilliseconds(1000 / 360 * _velocity));
             }
         }
@@ -77,6 +75,11 @@ namespace Data
         public override void AddPropertyChangedListener(PropertyChangedEventHandler handler)
         {
             this.PropertyChanged += handler;
+        }
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

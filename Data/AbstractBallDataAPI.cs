@@ -19,7 +19,6 @@ namespace Data
 
         // Setter for velocity property
         public abstract void setVelocity(int velocityX,  int velocityY);
-        // 
         public abstract void AddPropertyChangedListener(PropertyChangedEventHandler handler);
 
         public static AbstractBallDataAPI CreateInstance(Vector2 position,  int velX, int velY, int radius, int mass, bool isRunning)
