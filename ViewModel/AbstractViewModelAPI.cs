@@ -1,6 +1,5 @@
 ﻿using Model;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -12,7 +11,7 @@ namespace ViewModel
         public abstract ICommand StartSimInput { get; }
         public abstract ICommand StopSimInput { get; }
         public abstract ICommand SpawnBallInput { get; }
-        public abstract ObservableCollection<object> _balls { get; set; }
+        public abstract ObservableCollection<object> Balls { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         public abstract void StartSimulation();
