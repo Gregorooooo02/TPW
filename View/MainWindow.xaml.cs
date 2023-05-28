@@ -11,7 +11,7 @@ namespace View
         public MainWindow() : base()
         {
             InitializeComponent();
-            DataContext = AbstractViewModelAPI.CreateInstance(300, 150);
+            DataContext = AbstractViewModelAPI.CreateInstance(150, 300);
         }
     }
 }

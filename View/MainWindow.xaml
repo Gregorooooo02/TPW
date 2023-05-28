@@ -3,10 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:View"
+        xmlns:local="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
-        Title="Projekt Kulki" 
-        Height="600" Width="1080">
+        Title="MainWindow" Height="600" Width="1080">
     <Window.Background>
         <SolidColorBrush Color="White"/>
     </Window.Background>
@@ -43,7 +42,7 @@
             <TextBox x:Name="BallCountTextBox" Text="{Binding NumberOfBalls}" Width="50" VerticalAlignment="Center" Margin="0 0 10 0"/>
         </StackPanel>
         <StackPanel Grid.Row="2">
-            <Canvas RenderOptions.EdgeMode="Aliased" Margin="220,40" Background="#3f3f3f" Height="335">
+            <Canvas RenderOptions.EdgeMode="Aliased" Margin="220,40" Background="#3f3f3f" Height="335" Width="635">
                 <ItemsControl ItemsSource="{Binding Balls}" Padding="0">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
