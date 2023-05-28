@@ -19,8 +19,8 @@ namespace Logic
 
         public Ball(AbstractDataAPI dataAPI)
         {
-            this.WindowHeight = dataAPI.WindowHeight;
-            this.WindowWidth = dataAPI.WindowWidth;
+            this.WindowHeight = dataAPI.getWindowHeight();
+            this.WindowWidth = dataAPI.getWindowWidth();
             BallsList = new List<AbstractBallDataAPI>();
             this.dataAPI = dataAPI;
         }

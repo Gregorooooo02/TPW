@@ -6,8 +6,69 @@
         xmlns:views="clr-namespace:View"
         mc:Ignorable="d"
         Title="Projekt Kulki" 
-        ResizeMode="NoResize" Height="630" Width="835">
-    <Grid Background="White">
-        <views:SimulationWindow DataContext="{Binding CurrentViewModel}" Margin="10,10,-10,-10"/>
+        Height="600" Width="1080">
+    <Window.Background>
+        <SolidColorBrush Color="White"/>
+    </Window.Background>
+    <Window.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="BlueViolet"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10 5"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="5"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="BlueViolet"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20" >
+            <Button Content="Start" Command="{Binding StartSimInput}" Margin="5" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Stop" Command="{Binding StopSimInput}" Margin="5" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Create Balls" Command="{Binding SpawnBallInput}" Margin="5" Style="{StaticResource ButtonStyle}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 20">
+            <TextBlock Text="Number of Balls:" VerticalAlignment="Center" Margin="0 0 5 0"/>
+            <TextBox x:Name="BallCountTextBox" Text="{Binding NumberOfBalls}" Width="50" VerticalAlignment="Center" Margin="0 0 10 0"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2">
+            <Canvas RenderOptions.EdgeMode="Aliased" Margin="220,40" Background="#3f3f3f" Height="335">
+                <ItemsControl ItemsSource="{Binding Balls}" Padding="0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas IsItemsHost="True" Background="AliceBlue" HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Ellipse Width="{Binding Diameter}" Height="{Binding Diameter}"
+             Fill="BlueViolet" Stroke="Black" StrokeThickness="0">
+                                <Ellipse.RenderTransform>
+                                    <TranslateTransform X="{Binding PositionX}" Y="{Binding PositionY}" />
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                        </DataTemplate>
+
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="{x:Type ContentPresenter}">
+                            <Setter Property="Canvas.Left" Value="{Binding PositionX}" />
+                            <Setter Property="Canvas.Top" Value="{Binding PositionY}" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+            </Canvas>
+        </StackPanel>
     </Grid>
 </Window>

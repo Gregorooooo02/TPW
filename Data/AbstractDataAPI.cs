@@ -4,8 +4,8 @@
     public abstract class AbstractDataAPI
     {
         // Define abstract methods for Window Height and Window Width
-        public abstract int WindowHeight { get; }
-        public abstract int WindowWidth { get; }
+        public abstract int getWindowHeight();
+        public abstract int getWindowWidth();
 
         // Define abstract method for spawning balls in randomized position
         public abstract AbstractBallDataAPI spawnBalls(bool isRunning);

@@ -21,13 +21,20 @@ namespace Data
 
         private Random _rand = new Random();
 
-        public override int WindowHeight => _windowHeight;
-        public override int WindowWidth => _windowWidth;
-
         public Data(int windowHeight, int windowWidth)
         {
             _windowHeight = windowHeight;
             _windowWidth = windowWidth;
+        }
+
+        public override int getWindowHeight()
+        {
+            return _windowHeight;
+        }
+
+        public override int getWindowWidth()
+        {
+            return _windowWidth;
         }
 
         public override AbstractBallDataAPI spawnBalls(bool isRunning)

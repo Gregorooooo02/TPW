@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using ViewModel;
+using System.Windows;
 
 namespace View
 {
@@ -10,6 +11,7 @@ namespace View
         public MainWindow() : base()
         {
             InitializeComponent();
+            DataContext = AbstractViewModelAPI.CreateInstance(300, 150);
         }
     }
 }
