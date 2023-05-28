@@ -13,16 +13,18 @@ namespace Data
         public abstract int VelocityY { get; set; }
         public abstract int Diameter { get; }
         public abstract int Mass { get; }
-        public abstract int Size { get; }
+        public abstract int Radius { get; }
+
+        public abstract bool isRunning { get; set; }
 
         // Setter for velocity property
         public abstract void setVelocity(int velocityX,  int velocityY);
         // 
         public abstract void AddPropertyChangedListener(PropertyChangedEventHandler handler);
 
-        public static AbstractBallDataAPI CreateInstance(Vector2 position,  int velX, int velY, int size, int mass, bool isRunning)
+        public static AbstractBallDataAPI CreateInstance(Vector2 position,  int velX, int velY, int radius, int mass, bool isRunning)
         {
-            return new BallData();
+            return new BallData(position, velX, velY, radius, mass, isRunning);
         }
     }
 }
