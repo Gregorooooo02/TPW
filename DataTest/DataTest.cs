@@ -86,10 +86,10 @@ namespace Data.Tests
         public void BallAPI_GetSize()
         {
 
-            int mass = ball.Mass;
+            int size = ball.Radius;
 
 
-            Assert.AreEqual(10, mass);
+            Assert.AreEqual(10, size);
         }
 
         [TestMethod]
