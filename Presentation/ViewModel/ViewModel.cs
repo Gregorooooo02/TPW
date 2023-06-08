@@ -9,7 +9,6 @@ namespace ViewModel
         private readonly AbstractModelAPI _model;
         private ObservableCollection<object> _balls;
         private int _numberOfBalls;
-
         public override ICommand StartCommand { get; }
         public override ICommand StopCommand { get; }
         public override ICommand CreateBallCommand { get; }
@@ -73,8 +72,6 @@ namespace ViewModel
 
             Balls = GetBalls();
         }
-
-
 
         public override ObservableCollection<object> GetBalls()
         {

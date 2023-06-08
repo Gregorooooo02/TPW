@@ -6,14 +6,11 @@ namespace Logic
 {
     internal class Ball : AbstractBallAPI
     {
-
         public override List<AbstractBallDataAPI> balls { get; }
         private static readonly ReaderWriterLockSlim readerWriterLockSlim = new ReaderWriterLockSlim();
         public override int WindowWidth { get; }
         public override int WindowHeight { get; }
-
         private AbstractDataAPI data;
-
 
         public Ball(AbstractDataAPI data)
         {
@@ -23,8 +20,6 @@ namespace Logic
             this.WindowHeight = data.getWindowHeight();
 
         }
-
-
 
         public override void SpawnBall()
         {
@@ -41,7 +36,6 @@ namespace Logic
             balls.Add(ball);
             ball.AddPropertyChangedListener(CheckCollisions);
         }
-
 
         private bool CheckCollisionWithOtherBall(AbstractBallDataAPI ball1, AbstractBallDataAPI ball2)
         {
@@ -72,7 +66,6 @@ namespace Logic
                 return false;
             }
             return true;
-
         }
 
         private void CheckCollisionWithBoard(AbstractBallDataAPI ball)
@@ -108,7 +101,6 @@ namespace Logic
             if (ball != null)
             {
                 CheckCollisionWithBoard(ball);
-
                 foreach (var ball2 in balls)
                 {
                     if (!ball2.Equals(ball))
@@ -119,7 +111,6 @@ namespace Logic
             }
 
         }
-
 
         public override int GetPositionX(int index)
         {
@@ -178,10 +169,6 @@ namespace Logic
             {
                 return -1;
             }
-
         }
-
-
-
     }
 }

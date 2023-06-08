@@ -81,19 +81,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\jedre\\.nuget\\packages\\": {}
+    "C:\\Users\\Grzegorz\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jedre\\TPW\\Presentation\\View\\View.csproj",
+      "projectUniqueName": "C:\\Users\\Grzegorz\\source\\repos\\TPW\\Presentation\\View\\View.csproj",
       "projectName": "View",
-      "projectPath": "C:\\Users\\jedre\\TPW\\Presentation\\View\\View.csproj",
-      "packagesPath": "C:\\Users\\jedre\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jedre\\TPW\\Presentation\\View\\obj\\",
+      "projectPath": "C:\\Users\\Grzegorz\\source\\repos\\TPW\\Presentation\\View\\View.csproj",
+      "packagesPath": "C:\\Users\\Grzegorz\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Grzegorz\\source\\repos\\TPW\\Presentation\\View\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\jedre\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Grzegorz\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -107,8 +107,8 @@
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
           "projectReferences": {
-            "C:\\Users\\jedre\\TPW\\Presentation\\ViewModel\\ViewModel.csproj": {
-              "projectPath": "C:\\Users\\jedre\\TPW\\Presentation\\ViewModel\\ViewModel.csproj"
+            "C:\\Users\\Grzegorz\\source\\repos\\TPW\\Presentation\\ViewModel\\ViewModel.csproj": {
+              "projectPath": "C:\\Users\\Grzegorz\\source\\repos\\TPW\\Presentation\\ViewModel\\ViewModel.csproj"
             }
           }
         }
@@ -133,6 +133,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x86",
+            "version": "[6.0.16, 6.0.16]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
@@ -141,7 +147,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   }

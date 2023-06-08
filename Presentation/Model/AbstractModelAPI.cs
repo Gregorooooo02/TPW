@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 
 namespace Model
 {
-
     public abstract class AbstractModelAPI
     {
         public abstract void Start();
@@ -20,8 +19,6 @@ namespace Model
             {
                 return new Model(logicAPI);
             }
-            
         }
     }
-    
 }

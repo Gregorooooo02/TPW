@@ -18,7 +18,6 @@ namespace Data
         private static readonly ReaderWriterLockSlim positionLock = new ReaderWriterLockSlim();
         private readonly Stopwatch stopwatch = new Stopwatch();
 
-
         public BallData(Vector2 position, int deltaX, int deltaY, int size, int mass, bool _isSimulationRunning)
         {
             _position = position;
@@ -52,7 +51,6 @@ namespace Data
             this.PropertyChanged += handler;
         }
 
-
         private void setPosition(Vector2 newPosition)
         {
             positionLock.EnterWriteLock();
@@ -74,8 +72,6 @@ namespace Data
             get { return _isSimulationRunning; }
             set { _isSimulationRunning = value; }
         }
-
-
 
         public override int VelocityX
         {
@@ -140,8 +136,6 @@ namespace Data
                 stopwatch.Stop();
                 await Task.Delay(TimeSpan.FromMilliseconds(1000 / 460 * velocity + (int)stopwatch.ElapsedMilliseconds));
             }
-
-
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

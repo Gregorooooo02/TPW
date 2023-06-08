@@ -25,6 +25,7 @@ namespace Data
             _windowWidth = windowWidth;
             _windowHeight = windowHeight;
         }
+
         public override int getWindowWidth()
         {
             return _windowWidth;
@@ -71,7 +72,6 @@ namespace Data
             await Logger(queue);
         }
 
-
         private async Task Logger(ConcurrentQueue<AbstractBallDataAPI> queue)
         {
             while (isLoggerRunning)
@@ -94,6 +94,5 @@ namespace Data
                 await Task.Delay((int)_stopwatch.ElapsedMilliseconds + 100);
             }
         }
-
     }
 }

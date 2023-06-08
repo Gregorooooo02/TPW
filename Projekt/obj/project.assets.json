@@ -27,19 +27,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\jedre\\.nuget\\packages\\": {}
+    "C:\\Users\\Grzegorz\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jedre\\TPW\\Projekt\\Logic.csproj",
+      "projectUniqueName": "C:\\Users\\Grzegorz\\source\\repos\\TPW\\Projekt\\Logic.csproj",
       "projectName": "Logic",
-      "projectPath": "C:\\Users\\jedre\\TPW\\Projekt\\Logic.csproj",
-      "packagesPath": "C:\\Users\\jedre\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jedre\\TPW\\Projekt\\obj\\",
+      "projectPath": "C:\\Users\\Grzegorz\\source\\repos\\TPW\\Projekt\\Logic.csproj",
+      "packagesPath": "C:\\Users\\Grzegorz\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Grzegorz\\source\\repos\\TPW\\Projekt\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\jedre\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Grzegorz\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -53,8 +53,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\jedre\\TPW\\Data\\Data\\Data.csproj": {
-              "projectPath": "C:\\Users\\jedre\\TPW\\Data\\Data\\Data.csproj"
+            "C:\\Users\\Grzegorz\\source\\repos\\TPW\\Data\\Data\\Data.csproj": {
+              "projectPath": "C:\\Users\\Grzegorz\\source\\repos\\TPW\\Data\\Data\\Data.csproj"
             }
           }
         }
@@ -84,7 +84,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   }

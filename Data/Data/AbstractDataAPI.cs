@@ -17,6 +17,8 @@ namespace Data
         public abstract int getWindowHeight();
         public abstract void LoggerStop();
         public abstract Task LoggerStart(ConcurrentQueue<AbstractBallDataAPI> queue);
+
+
         public static ConcurrentQueue<AbstractBallDataAPI> ballQueue = AbstractBallDataAPI.BallQueue;
         public static AbstractDataAPI CreateInstance(int windowWidth, int windowHeight)
         {
