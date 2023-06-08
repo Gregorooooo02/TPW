@@ -1,0 +1,75 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "View/1.0.0": {
+        "dependencies": {
+          "ViewModel": "1.0.0"
+        },
+        "runtime": {
+          "View.dll": {}
+        }
+      },
+      "Data/1.0.0": {
+        "runtime": {
+          "Data.dll": {}
+        }
+      },
+      "Logic/1.0.0": {
+        "dependencies": {
+          "Data": "1.0.0"
+        },
+        "runtime": {
+          "Logic.dll": {}
+        }
+      },
+      "Model/1.0.0": {
+        "dependencies": {
+          "Logic": "1.0.0"
+        },
+        "runtime": {
+          "Model.dll": {}
+        }
+      },
+      "ViewModel/1.0.0": {
+        "dependencies": {
+          "Model": "1.0.0"
+        },
+        "runtime": {
+          "ViewModel.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "View/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Data/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Logic/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Model/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ViewModel/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

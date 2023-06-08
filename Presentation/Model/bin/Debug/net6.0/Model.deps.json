@@ -1,0 +1,49 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Model/1.0.0": {
+        "dependencies": {
+          "Logic": "1.0.0"
+        },
+        "runtime": {
+          "Model.dll": {}
+        }
+      },
+      "Data/1.0.0": {
+        "runtime": {
+          "Data.dll": {}
+        }
+      },
+      "Logic/1.0.0": {
+        "dependencies": {
+          "Data": "1.0.0"
+        },
+        "runtime": {
+          "Logic.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Model/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Data/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Logic/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
