@@ -13,8 +13,8 @@ namespace Data
         public abstract void AddPropertyChangedListener(PropertyChangedEventHandler handler);
         public abstract void setVelocity(int velocityX, int velocityY);
         public abstract int Diameter { get; }
-        public abstract int VelocityX { get; }
-        public abstract int VelocityY { get; }
+        public abstract int VelocityX { get; set; }
+        public abstract int VelocityY { get; set; }
         public abstract int Mass { get; }
         public abstract int Size { get; }
 

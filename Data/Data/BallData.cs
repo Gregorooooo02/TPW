@@ -84,6 +84,7 @@ namespace Data
                 }
                 finally { velocityLock.ExitReadLock(); }
             }
+            set => _deltaX = value;
         }
 
         public override int VelocityY
@@ -97,6 +98,7 @@ namespace Data
                 }
                 finally { velocityLock.ExitReadLock(); }
             }
+            set => _deltaY = value;
         }
 
         public override void setVelocity(int Vx, int Vy)
